@@ -3,6 +3,13 @@ export default class View {
         this.form = document.querySelector('.form');
         this.input = this.form.querySelector('.input');
         this.notesGrid = document.querySelector('.notes-grid');
+
+        this.form.addEventListener('submit', this.handleAdd.bind(this));
+    }
+
+    handleAdd(event) {
+        event.preventDefault();
+        if(this.input.value === '') return;
     }
 
     createNote(note) {
@@ -37,7 +44,7 @@ export default class View {
         this.notesGrid.appendChild(item);
     }
 
-    removeitem({
+    removeItem({
         target
     }) {
         const item = target.closest('.item');

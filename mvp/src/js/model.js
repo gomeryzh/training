@@ -12,6 +12,7 @@ export default class Model {
     }
 
     this.items.push(item);
+    return item;
   }
 
   removeitem(id) {
