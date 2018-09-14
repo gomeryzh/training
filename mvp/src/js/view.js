@@ -1,5 +1,8 @@
-export default class View {
+import EventEmitter from '../services/event-emitter';
+export default class View extends EventEmitter {
     constructor() {
+        super();
+
         this.form = document.querySelector('.form');
         this.input = this.form.querySelector('.input');
         this.notesGrid = document.querySelector('.notes-grid');
@@ -9,7 +12,11 @@ export default class View {
 
     handleAdd(event) {
         event.preventDefault();
-        if(this.input.value === '') return;
+        const {
+            value
+        } = this.input;
+        if (value === '') return;
+        this.emit('add', value);
     }
 
     createNote(note) {
@@ -21,12 +28,22 @@ export default class View {
         text.classList.add('text');
         text.textContent = note.text;
 
-        const button = document.createElement('button');
-        button.classList.add('button');
-        button.dataset.action = 'remove';
-        button.textContent = 'Удалить';
+        const actions = document.createElement('div');
+        actions.classList.add('actions');
 
-        item.append(text, button);
+        const buttonRemove = document.createElement('button');
+        buttonRemove.classList.add('button');
+        buttonRemove.dataset.action = 'remove';
+        buttonRemove.textContent = 'Удалить';
+
+        const buttonEdit = document.createElement('button');
+        buttonEdit.classList.add('button');
+        buttonEdit.dataset.action = 'edit';
+        buttonEdit.textContent = 'Редактировать';
+
+        actions.append(buttonRemove, buttonEdit);
+
+        item.append(text, actions);
 
         this.addEventListener(item);
 
@@ -35,7 +52,7 @@ export default class View {
 
     addEventListener(item) {
         const removeBtn = item.querySelector('[data-action="remove"]');
-        removeBtn.addEventListener('click', this.removeItem.bind(this));
+        removeBtn.addEventListener('click', this.handleRemove.bind(this));
     }
 
     addNote(note) {
@@ -44,10 +61,13 @@ export default class View {
         this.notesGrid.appendChild(item);
     }
 
-    removeItem({
-        target
-    }) {
-        const item = target.closest('.item');
+    handleRemove({target}) {
+        const parent = target.closest('.item');
+        this.emit('remove', parent.dataset.id);
+    }
+
+    removeItem(id) {
+        const item = this.notesGrid.querySelector(`[data-id="${id}"]`);
         this.notesGrid.removeChild(item);
     }
 }

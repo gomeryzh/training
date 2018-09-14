@@ -8,10 +8,9 @@ import EventEmitter from './services/event-emitter';
 const view = new View();
 const model = new Model();
 new Controller(model, view);
-const ee = new EventEmitter();
+console.log(view);
 
-ee.on('add', (val) => console.log(`add emitter ` + val));
+// const ee = new EventEmitter();
 
-setTimeout(() => {
-    ee.emit('add', 666);
-}, 1000);
+// ee.on('add', (val) => console.log('wefewf'));
+// ee.emit('add', 777);

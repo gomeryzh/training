@@ -1,4 +1,5 @@
 import v4 from 'uuid/v4';
+import { resolve } from 'path';
 
 export default class Model {
   constructor(items = []) {
@@ -12,14 +13,18 @@ export default class Model {
     }
 
     this.items.push(item);
-    return item;
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(item);
+      }, 200);
+    });
   }
 
-  removeitem(id) {
+  removeItem(id) {
     this.items = this.items.filter(item => item.id !== id);
   }
 
-  updateitem(id, props) {
+  updateItem(id, props) {
     const item = this.items.find(item => item.id === id);
 
     const keys = Object.keys(props);

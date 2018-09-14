@@ -3,16 +3,18 @@ export default class Controller {
         this.model = model;
         this.view = view;
 
-        //this.view.on('add', this.addNote.bind(this));
+        view.on('add', this.addNote.bind(this));
+        view.on('remove', this.removeNote.bind(this));
     }
 
     addNote(text) {
-        const note = model.addItem(text);
-        this.view.addNote(note);
+        
+        this.model.addItem(text).then((item) => {this.view.addNote(item)});
+        console.log(this.model);
     }
 
     removeNote(id) {
-        this.model.removeNote(id);
-        this.view.removeNote(id);
+        this.model.removeItem(id);
+        this.view.removeItem(id);
     }
 }
