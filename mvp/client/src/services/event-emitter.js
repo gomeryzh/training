@@ -1,3 +1,9 @@
+/**
+ * https://addyosmani.com/blog/understanding-the-publishsubscribe-pattern-for-greater-javascript-scalability/
+ *
+ * https://davidwalsh.name/pubsub-javascript
+ */
+
 export default class EventEmitter {
   constructor() {
     this.events = {};
@@ -5,15 +11,13 @@ export default class EventEmitter {
 
   on(type, callback) {
     this.events[type] = this.events[type] || [];
+
     this.events[type].push(callback);
   }
 
   emit(type, ...args) {
-    if(this.events[type]) {
+    if (this.events[type]) {
       this.events[type].forEach(callback => callback(...args));
     }
   }
 }
-
-
-
