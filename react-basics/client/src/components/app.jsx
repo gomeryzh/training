@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import * as Api from "../services/api";
-import NoteEditor from "./note-editor";
-import NotesGrid from "./notes-grid";
-import Modal from "./modal";
-import Backdrop from "./backdrop";
+import React, { Component } from 'react';
+import * as Api from '../services/api';
+import NoteEditor from './note-editor';
+import NotesGrid from './notes-grid';
+import Modal from './modal';
+import Backdrop from './backdrop';
 
 const getNoteById = (notes, id) => notes.find(note => note.id === id);
 
