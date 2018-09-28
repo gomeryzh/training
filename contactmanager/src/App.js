@@ -5,10 +5,16 @@ import Contacts from './components/Contacts';
 import Header from './components/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import {
+  Provider
+} from './Context'
 
 class App extends Component {
   render() {
-    return ( < div className = "App" >
+    return ( <
+      Provider >
+      <
+      div className = "App" >
       <
       Header branding = "Contact Manager" / >
       <
@@ -18,6 +24,8 @@ class App extends Component {
       <
       /div> < /
       div >
+      <
+      /Provider>
     );
   }
 }

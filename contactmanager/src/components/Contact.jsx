@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Consumer } from '../Context';
 
 export default class Contact extends Component {
   state = {
@@ -11,21 +12,43 @@ export default class Contact extends Component {
       contactInfoIsShown: !this.state.contactInfoIsShown
     });
   };
+
+  onDeleteClick = (id, dispatch) => {
+    dispatch({ type: 'Delete_Contact', payload: id });
+  };
+
   render() {
-    const { name, email, phone } = this.props.contact;
+    const { id, name, email, phone } = this.props.contact;
     const { contactInfoIsShown } = this.state;
     return (
-      <div className="card card-body mb-3">
-        <h4>
-          {name} <i className="fa fa-sort-down" onClick={this.onShowClick} />
-        </h4>
-        {contactInfoIsShown ? (
-          <ul className="list-group">
-            <li className="list-gpoup-item">Email: {email}</li>
-            <li className="list-gpoup-item">Phone: {phone}</li>
-          </ul>
-        ) : null}
-      </div>
+      <Consumer>
+        {value => {
+          const { dispatch } = value;
+          return (
+            <div className="card card-body mb-3">
+              <h4>
+                {name}{' '}
+                <i
+                  className="fa fa-sort-down"
+                  onClick={this.onShowClick}
+                  style={{ cursor: 'pointer' }}
+                />
+                <i
+                  className="fa fa-times"
+                  style={{ cursor: 'pointer', color: 'red', float: 'right' }}
+                  onClick={this.onDeleteClick.bind(this, id, dispatch)}
+                />
+              </h4>
+              {contactInfoIsShown ? (
+                <ul className="list-group">
+                  <li className="list-gpoup-item">Email: {email}</li>
+                  <li className="list-gpoup-item">Phone: {phone}</li>
+                </ul>
+              ) : null}
+            </div>
+          );
+        }}
+      </Consumer>
     );
   }
 }
