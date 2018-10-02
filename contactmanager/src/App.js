@@ -2,18 +2,28 @@ import React, {
   Component
 } from 'react';
 import Contacts from './components/contacts/Contacts';
-import Header from './components/layout/Header';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch
+} from 'react-router-dom';
 import AddContact from './components/contacts/AddContact';
+import Header from './components/layout/Header';
+import About from './components/pages/About';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import {
   Provider
 } from './Context'
+import NotFound from './components/pages/NotFound';
 
 class App extends Component {
   render() {
     return ( <
       Provider >
+      <
+      Router >
       <
       div className = "App" >
       <
@@ -21,14 +31,34 @@ class App extends Component {
       <
       div className = "container" >
       <
-      AddContact / >
+      Switch >
       <
-      Contacts / >
-      <
+      Route exact path = "/"
+      component = {
+        Contacts
+      }
+      />  <
+      Route exact path = "/contact/add"
+      component = {
+        AddContact
+      }
+      /> <
+      Route exact path = "/about"
+      component = {
+        About
+      }
+      />  <
+      Route component = {
+        NotFound
+      }
+      /> <
+      /
+      Switch > <
       /div> < /
       div >
       <
-      /Provider>
+      /Router> < /
+      Provider >
     );
   }
 }
