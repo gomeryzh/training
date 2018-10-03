@@ -17,6 +17,7 @@ import {
   Provider
 } from './Context'
 import NotFound from './components/pages/NotFound';
+import Test from './components/test/test';
 
 class App extends Component {
   render() {
@@ -47,12 +48,16 @@ class App extends Component {
       component = {
         About
       }
-      />  <
+      /> <
+      Route exact path = "/test"
+      component = {
+        Test
+      }
+      />    <
       Route component = {
         NotFound
       }
-      /> <
-      /
+      /> < /
       Switch > <
       /div> < /
       div >
