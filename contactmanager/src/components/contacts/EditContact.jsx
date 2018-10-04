@@ -3,7 +3,7 @@ import { Consumer } from '../../Context';
 import TextInputGroup from '../layout/TextInputGropup';
 import Axios from 'axios';
 
-export default class AddContact extends Component {
+export default class EditContact extends Component {
   state = {
     name: '',
     email: '',
@@ -12,6 +12,19 @@ export default class AddContact extends Component {
   };
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
+
+  async componentDidMount() {
+    const { id } = this.props.match.params;
+    const res = await Axios.get(
+      `https://jsonplaceholder.typicode.com/users/${id}`
+    );
+    const contact = res.data;
+    this.setState({
+      name: contact.name,
+      email: contact.email,
+      phone: contact.phone
+    });
+  }
 
   onSubmit = async (dispatch, e) => {
     e.preventDefault();
@@ -32,17 +45,19 @@ export default class AddContact extends Component {
       return;
     }
 
-    const newContact = {
+    const updatedContact = {
       name,
       email,
       phone
     };
 
-    const res = await Axios.post(
-      'https://jsonplaceholder.typicode.com/users',
-      newContact
+    const { id } = this.props.match.params;
+
+    const res = await Axios.put(
+      `https://jsonplaceholder.typicode.com/users/${id}`,
+      updatedContact
     );
-    dispatch({ type: 'Add_Contact', payload: res.data });
+    dispatch({ type: 'Update_contact', payload: res.data });
 
     this.setState({
       name: '',
@@ -63,7 +78,7 @@ export default class AddContact extends Component {
           const { dispatch } = value;
           return (
             <div className="card mb-3">
-              <div className="card-header">Add contact</div>
+              <div className="card-header">Edit contact</div>
               <div className="card-body">
                 <form onSubmit={this.onSubmit.bind(this, dispatch)}>
                   <TextInputGroup
@@ -93,7 +108,7 @@ export default class AddContact extends Component {
                   />
                   <input
                     type="submit"
-                    value="Add Contact"
+                    value="Update Contact"
                     className="btn btn-ligth btn-block"
                   />
                 </form>

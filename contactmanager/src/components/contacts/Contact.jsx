@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Consumer } from '../../Context';
 import Axios from 'axios';
@@ -14,10 +15,13 @@ export default class Contact extends Component {
     });
   };
 
-  onDeleteClick = (id, dispatch) => {
-    Axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`).then(res =>
-      dispatch({ type: 'Delete_Contact', payload: id })
-    );
+  onDeleteClick = async (id, dispatch) => {
+    try {
+      await Axios.delete(`https://jsonplaceholder.typicode.com/users/${id}`);
+      dispatch({ type: 'Delete_Contact', payload: id });
+    } catch (error) {
+      dispatch({ type: 'Delete_Contact', payload: id });
+    }
   };
 
   render() {
@@ -41,6 +45,17 @@ export default class Contact extends Component {
                   style={{ cursor: 'pointer', color: 'red', float: 'right' }}
                   onClick={this.onDeleteClick.bind(this, id, dispatch)}
                 />
+                <Link to={`contact/edit/${id}`}>
+                  <i
+                    className="fas fa-pencil-alt"
+                    style={{
+                      cursor: 'pointer',
+                      color: 'black',
+                      float: 'right',
+                      marginRight: '1rem'
+                    }}
+                  />
+                </Link>
               </h4>
               {contactInfoIsShown ? (
                 <ul className="list-group">
